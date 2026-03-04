@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام تتبع الطلاب | مدرسة عبدالله بن سلام الثانوية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0a4f3e;
+    --primary-light: #0d6b54;
+    --accent: #f4c430;
+    --accent-light: #ffd966;
+    --bg: #f8f9f5;
+    --card: #ffffff;
+    --text: #1a2e2a;
+    --text-muted: #5a7a72;
+    --danger: #c0392b;
+    --success: #1e8c5f;
+    --warning: #e67e22;
+    --border: #d4e6e0;
+    --shadow: 0 4px 24px rgba(10,79,62,0.10);
+    --radius: 16px;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: ‘Tajawal’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+direction: rtl;
+}
+
+/* Header */
+.header {
+background: linear-gradient(135deg, var(–primary) 0%, #0d6b54 60%, #1a9e75 100%);
+color: white;
+padding: 0;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: 0 4px 20px rgba(10,79,62,0.25);
+}
+
+.header-inner {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 32px;
+gap: 16px;
+}
+
+.school-brand {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+
+.school-logo {
+width: 52px; height: 52px;
+background: var(–accent);
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 24px;
+box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+flex-shrink: 0;
+}
+
+.school-name { line-height: 1.3; }
+.school-name h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.3px; }
+.school-name span { font-size: 12px; opacity: 0.8; font-weight: 300; }
+
+.header-clock {
+background: rgba(255,255,255,0.12);
+border: 1px solid rgba(255,255,255,0.2);
+border-radius: 12px;
+padding: 8px 18px;
+text-align: center;
+backdrop-filter: blur(10px);
+}
+.clock-time { font-size: 22px; font-weight: 700; font-family: ‘Cairo’, sans-serif; letter-spacing: 2px; }
+.clock-date { font-size: 11px; opacity: 0.75; margin-top: 2px; }
+
+.header-stats {
+display: flex; gap: 12px;
+}
+.stat-badge {
+background: rgba(255,255,255,0.12);
+border: 1px solid rgba(255,255,255,0.2);
+border-radius: 10px;
+padding: 8px 16px;
+text-align: center;
+backdrop-filter: blur(10px);
+}
+.stat-badge .num { font-size: 20px; font-weight: 800; font-family: ‘Cairo’, sans-serif; }
+.stat-badge .lbl { font-size: 10px; opacity: 0.75; }
+
+/* Main Layout */
+.main-container {
+max-width: 1400px;
+margin: 0 auto;
+padding: 28px 24px;
+display: grid;
+grid-template-columns: 380px 1fr;
+gap: 24px;
+align-items: start;
+}
+
+/* Panel */
+.panel {
+background: var(–card);
+border-radius: var(–radius);
+box-shadow: var(–shadow);
+border: 1px solid var(–border);
+overflow: hidden;
+}
+
+.panel-header {
+background: linear-gradient(135deg, var(–primary), var(–primary-light));
+color: white;
+padding: 18px 22px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.panel-header .icon { font-size: 20px; }
+.panel-header h2 { font-size: 16px; font-weight: 700; }
+
+.panel-body { padding: 22px; }
+
+/* Form */
+.form-group { margin-bottom: 16px; }
+.form-group label {
+display: block;
+font-size: 13px;
+font-weight: 600;
+color: var(–text-muted);
+margin-bottom: 6px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+width: 100%;
+padding: 12px 16px;
+border: 1.5px solid var(–border);
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 15px;
+color: var(–text);
+background: #f8fffe;
+transition: all 0.2s;
+outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+border-color: var(–primary-light);
+box-shadow: 0 0 0 3px rgba(13,107,84,0.12);
+background: white;
+}
+
+.reason-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.reason-btn {
+padding: 10px 8px;
+border: 1.5px solid var(–border);
+border-radius: 10px;
+background: #f8fffe;
+cursor: pointer;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+color: var(–text-muted);
+transition: all 0.2s;
+text-align: center;
+}
+
+.reason-btn:hover { border-color: var(–primary-light); color: var(–primary); background: #e8f5f0; }
+.reason-btn.active { border-color: var(–primary); background: var(–primary); color: white; }
+
+.submit-btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, var(–primary), var(–primary-light));
+color: white;
+border: none;
+border-radius: 12px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 16px;
+font-weight: 800;
+cursor: pointer;
+transition: all 0.25s;
+box-shadow: 0 4px 14px rgba(10,79,62,0.3);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-top: 8px;
+}
+
+.submit-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(10,79,62,0.4);
+}
+
+.submit-btn:active { transform: translateY(0); }
+
+/* Tracking Table */
+.right-panel { display: flex; flex-direction: column; gap: 20px; }
+
+.filter-bar {
+display: flex;
+gap: 10px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.filter-bar input {
+flex: 1;
+min-width: 200px;
+padding: 10px 16px;
+border: 1.5px solid var(–border);
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+background: white;
+outline: none;
+}
+.filter-bar input:focus { border-color: var(–primary-light); }
+
+.filter-btn {
+padding: 10px 18px;
+border: 1.5px solid var(–border);
+border-radius: 10px;
+background: white;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+color: var(–text-muted);
+}
+.filter-btn.active { background: var(–primary); color: white; border-color: var(–primary); }
+.filter-btn:hover:not(.active) { border-color: var(–primary-light); color: var(–primary); }
+
+.table-wrap {
+overflow-x: auto;
+border-radius: 12px;
+border: 1px solid var(–border);
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 14px;
+}
+
+thead tr {
+background: linear-gradient(135deg, var(–primary), #0d6b54);
+color: white;
+}
+
+thead th {
+padding: 14px 16px;
+text-align: right;
+font-weight: 700;
+font-size: 13px;
+white-space: nowrap;
+}
+
+tbody tr {
+border-bottom: 1px solid var(–border);
+transition: background 0.15s;
+}
+tbody tr:hover { background: #f0faf5; }
+tbody tr:last-child { border-bottom: none; }
+
+tbody td {
+padding: 13px 16px;
+white-space: nowrap;
+}
+
+.status-badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 4px 12px;
+border-radius: 20px;
+font-size: 12px;
+font-weight: 700;
+}
+
+.status-out {
+background: #fff3e0;
+color: var(–warning);
+border: 1px solid #ffe0b2;
+}
+
+.status-in {
+background: #e8f5e9;
+color: var(–success);
+border: 1px solid #c8e6c9;
+}
+
+.status-late {
+background: #fce4e4;
+color: var(–danger);
+border: 1px solid #f5c6c6;
+}
+
+.return-btn {
+padding: 6px 14px;
+background: var(–success);
+color: white;
+border: none;
+border-radius: 8px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 12px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.2s;
+}
+.return-btn:hover { background: #167a52; transform: scale(1.05); }
+
+.no-btn {
+color: var(–text-muted);
+font-size: 12px;
+font-style: italic;
+}
+
+/* Timer */
+.timer {
+font-family: ‘Cairo’, monospace;
+font-size: 13px;
+font-weight: 700;
+}
+.timer.danger { color: var(–danger); animation: pulse 1s infinite; }
+.timer.warn { color: var(–warning); }
+.timer.ok { color: var(–success); }
+
+@keyframes pulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+
+/* Toast */
+.toast {
+position: fixed;
+bottom: 30px;
+left: 50%;
+transform: translateX(-50%) translateY(100px);
+background: var(–primary);
+color: white;
+padding: 14px 28px;
+border-radius: 14px;
+font-size: 15px;
+font-weight: 600;
+box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+z-index: 9999;
+display: flex;
+align-items: center;
+gap: 10px;
+white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(–success); }
+.toast.warning { background: var(–warning); }
+
+/* Modal */
+.modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.5);
+backdrop-filter: blur(4px);
+display: flex; align-items: center; justify-content: center;
+z-index: 1000;
+opacity: 0; pointer-events: none;
+transition: opacity 0.3s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+
+.modal {
+background: white;
+border-radius: 20px;
+padding: 32px;
+max-width: 440px;
+width: 90%;
+text-align: center;
+box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+transform: scale(0.9);
+transition: transform 0.3s;
+}
+.modal-overlay.show .modal { transform: scale(1); }
+
+.modal-icon { font-size: 52px; margin-bottom: 16px; }
+.modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(–primary); }
+.modal p { color: var(–text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+
+.modal-actions { display: flex; gap: 12px; justify-content: center; }
+.modal-btn {
+padding: 12px 28px;
+border-radius: 12px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+cursor: pointer;
+border: none;
+transition: all 0.2s;
+}
+.modal-btn.primary { background: var(–primary); color: white; }
+.modal-btn.primary:hover { background: var(–primary-light); }
+.modal-btn.secondary { background: var(–border); color: var(–text-muted); }
+.modal-btn.secondary:hover { background: #c8d8d2; }
+
+/* Empty */
+.empty-state {
+text-align: center;
+padding: 48px;
+color: var(–text-muted);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state p { font-size: 15px; }
+
+/* Summary cards */
+.summary-cards {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 14px;
+}
+
+.sum-card {
+background: white;
+border-radius: 14px;
+padding: 18px;
+border: 1px solid var(–border);
+box-shadow: var(–shadow);
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+
+.sum-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 4px;
+}
+
+.sum-card.out::before { background: var(–warning); }
+.sum-card.in::before { background: var(–success); }
+.sum-card.late::before { background: var(–danger); }
+
+.sum-card .num { font-size: 36px; font-weight: 900; font-family: ‘Cairo’, sans-serif; line-height: 1; margin-bottom: 4px; }
+.sum-card.out .num { color: var(–warning); }
+.sum-card.in .num { color: var(–success); }
+.sum-card.late .num { color: var(–danger); }
+.sum-card .lbl { font-size: 12px; color: var(–text-muted); font-weight: 600; }
+
+/* Permission pass */
+.pass-preview {
+background: linear-gradient(135deg, #f8fff8, #e8f5e9);
+border: 2px dashed var(–success);
+border-radius: 14px;
+padding: 16px;
+margin-top: 12px;
+display: none;
+}
+.pass-preview.show { display: block; }
+.pass-preview h4 { color: var(–primary); font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.pass-info { display: flex; justify-content: space-between; font-size: 12px; color: var(–text-muted); }
+
+/* Responsive */
+@media (max-width: 960px) {
+.main-container { grid-template-columns: 1fr; }
+.header-stats { display: none; }
+.summary-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
+.header-inner { padding: 12px 16px; }
+.main-container { padding: 16px; }
+.summary-cards { grid-template-columns: 1fr 1fr; }
+}
+
+/* Print pass */
+@media print {
+body * { visibility: hidden; }
+#printPass, #printPass * { visibility: visible; }
+#printPass {
+position: fixed; top: 20mm; left: 50%;
+transform: translateX(-50%);
+width: 85mm;
+border: 3px solid var(–primary);
+border-radius: 8px;
+padding: 14px;
+background: white;
+font-family: ‘Tajawal’, sans-serif;
+}
+}
+
+.section-title {
+display: flex; align-items: center; gap: 10px;
+font-size: 15px; font-weight: 700; color: var(–primary);
+margin-bottom: 14px;
+}
+.section-title::after {
+content: ‘’;
+flex: 1;
+height: 2px;
+background: var(–border);
+border-radius: 2px;
+}
+
+/* ===== NAV TABS ===== */
+.nav-tabs {
+background: white;
+border-bottom: 2px solid var(–border);
+display: flex;
+gap: 0;
+padding: 0 24px;
+overflow-x: auto;
+}
+.nav-tab {
+padding: 14px 24px;
+border: none;
+background: none;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+color: var(–text-muted);
+cursor: pointer;
+border-bottom: 3px solid transparent;
+margin-bottom: -2px;
+display: flex;
+align-items: center;
+gap: 8px;
+transition: all 0.2s;
+white-space: nowrap;
+}
+.nav-tab:hover { color: var(–primary); }
+.nav-tab.active { color: var(–primary); border-bottom-color: var(–primary); }
+.nav-tab .tab-icon { font-size: 20px; }
+.nav-tab .tab-badge {
+background: var(–danger);
+color: white;
+border-radius: 20px;
+font-size: 11px;
+padding: 2px 8px;
+font-weight: 800;
+}
+.nav-tab.abs-tab.active { color: #c0392b; border-bottom-color: #c0392b; }
+.nav-tab.vio-tab.active { color: #8e44ad; border-bottom-color: #8e44ad; }
+.nav-tab.par-tab.active { color: #1e8c5f; border-bottom-color: #1e8c5f; }
+
+/* ===== PAGES ===== */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ===== ABSENCE ===== */
+.abs-header { background: linear-gradient(135deg, #c0392b, #e74c3c) !important; }
+.vio-header { background: linear-gradient(135deg, #6c3483, #8e44ad) !important; }
+.par-header { background: linear-gradient(135deg, #1e8c5f, #27ae60) !important; }
+
+.absence-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.abs-card {
+background: white;
+border-radius: 14px;
+padding: 16px;
+text-align: center;
+border: 1px solid var(–border);
+box-shadow: var(–shadow);
+position: relative;
+overflow: hidden;
+}
+.abs-card::before { content: ‘’; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.abs-card.c1::before { background: #c0392b; }
+.abs-card.c2::before { background: #e67e22; }
+.abs-card.c3::before { background: #3498db; }
+.abs-card.c4::before { background: #1e8c5f; }
+.abs-card .num { font-size: 30px; font-weight: 900; font-family: ‘Cairo’, sans-serif; }
+.abs-card.c1 .num { color: #c0392b; }
+.abs-card.c2 .num { color: #e67e22; }
+.abs-card.c3 .num { color: #3498db; }
+.abs-card.c4 .num { color: #1e8c5f; }
+.abs-card .lbl { font-size: 11px; color: var(–text-muted); font-weight: 600; margin-top: 4px; }
+
+.abs-form-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; margin-bottom: 16px; }
+.abs-form-row input, .abs-form-row select {
+padding: 10px 14px;
+border: 1.5px solid var(–border);
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+background: white;
+outline: none;
+width: 100%;
+}
+.abs-form-row input:focus, .abs-form-row select:focus { border-color: #c0392b; }
+.abs-form-row label { display: block; font-size: 12px; font-weight: 600; color: var(–text-muted); margin-bottom: 5px; }
+
+.abs-add-btn {
+padding: 10px 20px;
+background: #c0392b;
+color: white;
+border: none;
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+white-space: nowrap;
+transition: all 0.2s;
+}
+.abs-add-btn:hover { background: #a93226; }
+
+/* ===== VIOLATIONS ===== */
+.vio-type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.vio-type-btn {
+padding: 9px 8px;
+border: 1.5px solid #d7bde2;
+border-radius: 10px;
+background: #f9f0ff;
+cursor: pointer;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 12px;
+font-weight: 600;
+color: #6c3483;
+transition: all 0.2s;
+text-align: center;
+}
+.vio-type-btn:hover { border-color: #8e44ad; background: #e8d5f5; }
+.vio-type-btn.active { background: #6c3483; color: white; border-color: #6c3483; }
+
+.vio-severity {
+display: flex; gap: 8px; margin-bottom: 12px;
+}
+.sev-btn {
+flex: 1;
+padding: 8px;
+border-radius: 8px;
+border: 1.5px solid;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+cursor: pointer;
+text-align: center;
+transition: all 0.2s;
+}
+.sev-btn.low { border-color: #f1c40f; color: #d4ac0d; background: #fefde0; }
+.sev-btn.low.active { background: #f1c40f; color: white; }
+.sev-btn.mid { border-color: #e67e22; color: #ca6f1e; background: #fef3e2; }
+.sev-btn.mid.active { background: #e67e22; color: white; }
+.sev-btn.high { border-color: #c0392b; color: #a93226; background: #fdf0ee; }
+.sev-btn.high.active { background: #c0392b; color: white; }
+
+.vio-add-btn {
+width: 100%;
+padding: 12px;
+background: linear-gradient(135deg, #6c3483, #8e44ad);
+color: white;
+border: none;
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 15px;
+font-weight: 800;
+cursor: pointer;
+transition: all 0.2s;
+margin-top: 8px;
+}
+.vio-add-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.vio-badge {
+display: inline-flex; align-items: center; gap: 4px;
+padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+}
+.vio-badge.low { background: #fef9e7; color: #d4ac0d; border: 1px solid #f9e79f; }
+.vio-badge.mid { background: #fef3e2; color: #ca6f1e; border: 1px solid #fad7a0; }
+.vio-badge.high { background: #fdf0ee; color: #a93226; border: 1px solid #f5b7b1; }
+
+/* ===== PARTICIPATION ===== */
+.par-stars { display: flex; gap: 6px; font-size: 22px; cursor: pointer; margin: 8px 0; }
+.par-star { color: #d4d4d4; transition: color 0.15s; }
+.par-star.lit { color: var(–accent); }
+
+.par-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.par-type-btn {
+padding: 9px 8px;
+border: 1.5px solid #a9dfbf;
+border-radius: 10px;
+background: #f0faf5;
+cursor: pointer;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 12px;
+font-weight: 600;
+color: #1e8c5f;
+transition: all 0.2s;
+text-align: center;
+}
+.par-type-btn:hover { border-color: #1e8c5f; background: #d5f5e3; }
+.par-type-btn.active { background: #1e8c5f; color: white; border-color: #1e8c5f; }
+
+.par-add-btn {
+width: 100%;
+padding: 12px;
+background: linear-gradient(135deg, #1e8c5f, #27ae60);
+color: white;
+border: none;
+border-radius: 10px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 15px;
+font-weight: 800;
+cursor: pointer;
+transition: all 0.2s;
+margin-top: 8px;
+}
+.par-add-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.stars-display { color: var(–accent); font-size: 14px; }
+
+.leaderboard {
+display: flex; flex-direction: column; gap: 8px;
+}
+.lb-row {
+display: flex; align-items: center; gap: 12px;
+background: white;
+border-radius: 10px;
+padding: 10px 14px;
+border: 1px solid var(–border);
+transition: all 0.2s;
+}
+.lb-row:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.lb-rank { font-size: 18px; font-weight: 900; font-family: ‘Cairo’, sans-serif; color: var(–text-muted); width: 28px; text-align: center; }
+.lb-rank.gold { color: #f4c430; }
+.lb-rank.silver { color: #95a5a6; }
+.lb-rank.bronze { color: #ca6f1e; }
+.lb-info { flex: 1; }
+.lb-name { font-size: 14px; font-weight: 700; }
+.lb-class { font-size: 12px; color: var(–text-muted); }
+.lb-score { font-size: 20px; font-weight: 900; font-family: ‘Cairo’, sans-serif; color: var(–primary); }
+
+@media (max-width: 768px) {
+.absence-summary { grid-template-columns: 1fr 1fr; }
+.abs-form-row { grid-template-columns: 1fr 1fr; }
+.vio-type-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- Header -->
+
+<header class="header">
+  <div class="header-inner">
+    <div class="school-brand">
+      <div class="school-logo">🏫</div>
+      <div class="school-name">
+        <h1>مدرسة عبدالله بن سلام الثانوية</h1>
+        <span>نظام إدارة الاستئذان وتتبع الطلاب</span>
+      </div>
+    </div>
+    <div class="header-clock">
+      <div class="clock-time" id="clockTime">00:00:00</div>
+      <div class="clock-date" id="clockDate">--</div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-badge">
+        <div class="num" id="hdrOut">0</div>
+        <div class="lbl">خارج الآن</div>
+      </div>
+      <div class="stat-badge">
+        <div class="num" id="hdrTotal">0</div>
+        <div class="lbl">إجمالي اليوم</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Nav Tabs -->
+
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showPage('exit')">
+    <span class="tab-icon">🚪</span> الاستئذان
+  </button>
+  <button class="nav-tab abs-tab" onclick="showPage('absence')">
+    <span class="tab-icon">📅</span> الغياب
+    <span class="tab-badge" id="absBadge">0</span>
+  </button>
+  <button class="nav-tab vio-tab" onclick="showPage('violations')">
+    <span class="tab-icon">⚠️</span> المخالفات السلوكية
+    <span class="tab-badge" id="vioBadge">0</span>
+  </button>
+  <button class="nav-tab par-tab" onclick="showPage('participation')">
+    <span class="tab-icon">⭐</span> المشاركة
+  </button>
+</nav>
+
+<!-- =================== PAGE: EXIT =================== -->
+
+<div id="page-exit" class="page active">
+<!-- Main -->
+<div class="main-container">
+
+  <!-- Left: Request Form -->
+
+  <div>
+    <div class="panel">
+      <div class="panel-header">
+        <span class="icon">📝</span>
+        <h2>طلب استئذان جديد</h2>
+      </div>
+      <div class="panel-body">
+
+```
+    <div class="form-group">
+      <label>رقم الطالب / الاسم</label>
+      <input type="text" id="studentId" placeholder="أدخل رقم الطالب أو اسمه" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label>الفصل الدراسي</label>
+      <select id="classRoom">
+        <option value="">-- اختر الفصل --</option>
+        <optgroup label="الصف الأول الثانوي">
+          <option>1/1</option><option>1/2</option><option>1/3</option>
+          <option>1/4</option><option>1/5</option><option>1/6</option>
+        </optgroup>
+        <optgroup label="الصف الثاني الثانوي">
+          <option>2/1</option><option>2/2</option><option>2/3</option>
+          <option>2/4</option><option>2/5</option><option>2/6</option>
+        </optgroup>
+        <optgroup label="الصف الثالث الثانوي">
+          <option>3/1</option><option>3/2</option><option>3/3</option>
+          <option>3/4</option><option>3/5</option><option>3/6</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>المادة / المعلم</label>
+      <input type="text" id="subject" placeholder="اسم المادة أو المعلم">
+    </div>
+
+    <div class="form-group">
+      <label>سبب الاستئذان</label>
+      <div class="reason-grid">
+        <button class="reason-btn" onclick="selectReason(this, 'دورة مياه')">🚻 دورة مياه</button>
+        <button class="reason-btn" onclick="selectReason(this, 'إدارة المدرسة')">🏢 إدارة المدرسة</button>
+        <button class="reason-btn" onclick="selectReason(this, 'العيادة الصحية')">🏥 العيادة الصحية</button>
+        <button class="reason-btn" onclick="selectReason(this, 'مكتبة المدرسة')">📚 المكتبة</button>
+        <button class="reason-btn" onclick="selectReason(this, 'مستشار الطلاب')">👨‍💼 مستشار الطلاب</button>
+        <button class="reason-btn" onclick="selectReason(this, 'أخرى')">📋 أخرى</button>
+      </div>
+      <input type="hidden" id="reason" value="">
+    </div>
+
+    <div class="form-group">
+      <label>مدة الاستئذان المتوقعة (دقائق)</label>
+      <select id="duration">
+        <option value="5">5 دقائق</option>
+        <option value="10" selected>10 دقائق</option>
+        <option value="15">15 دقيقة</option>
+        <option value="20">20 دقيقة</option>
+        <option value="30">30 دقيقة</option>
+      </select>
+    </div>
+
+    <button class="submit-btn" onclick="submitRequest()">
+      <span>🚪</span>
+      <span>إصدار تصريح الخروج</span>
+    </button>
+
+    <div class="pass-preview" id="passPreview">
+      <h4>✅ تصريح الخروج صادر</h4>
+      <div class="pass-info">
+        <span id="passStudent">—</span>
+        <span id="passReason">—</span>
+        <span id="passTime">—</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- Right: Tracking -->
+
+  <div class="right-panel">
+
+```
+<!-- Summary -->
+<div>
+  <div class="section-title">📊 ملخص اليوم</div>
+  <div class="summary-cards">
+    <div class="sum-card out">
+      <div class="num" id="sumOut">0</div>
+      <div class="lbl">🔴 خارج الفصل</div>
+    </div>
+    <div class="sum-card in">
+      <div class="num" id="sumIn">0</div>
+      <div class="lbl">✅ عاد للفصل</div>
+    </div>
+    <div class="sum-card late">
+      <div class="num" id="sumLate">0</div>
+      <div class="lbl">⚠️ تجاوز المدة</div>
+    </div>
+  </div>
+</div>
+
+<!-- Filter -->
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+  <input type="text" id="searchInput" placeholder="🔍 ابحث باسم الطالب أو الفصل..." oninput="renderTable()" style="flex:1;min-width:200px;padding:10px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Tajawal',sans-serif;font-size:14px;background:white;outline:none;">
+  <button class="filter-btn active" id="f-all" onclick="setFilter('all')">الكل</button>
+  <button class="filter-btn" id="f-out" onclick="setFilter('out')">خارج</button>
+  <button class="filter-btn" id="f-in" onclick="setFilter('in')">عاد</button>
+  <button class="filter-btn" id="f-late" onclick="setFilter('late')">تأخر</button>
+</div>
+
+<!-- Table -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="icon">📋</span>
+    <h2>سجل الطلاب خارج الفصل</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>الطالب</th>
+          <th>الفصل</th>
+          <th>السبب</th>
+          <th>وقت الخروج</th>
+          <th>وقت العودة</th>
+          <th>المدة المنقضية</th>
+          <th>الحالة</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+      <tbody id="trackingBody">
+      </tbody>
+    </table>
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🎓</div>
+      <p>لا توجد طلبات استئذان حتى الآن<br>استخدم النموذج على اليمين لإضافة طلب جديد</p>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+</div><!-- end page-exit -->
+
+<!-- =================== PAGE: ABSENCE =================== -->
+
+<div id="page-absence" class="page">
+<div class="main-container" style="grid-template-columns:340px 1fr;">
+
+  <!-- Form -->
+
+  <div class="panel">
+    <div class="panel-header abs-header">
+      <span class="icon">📅</span>
+      <h2>تسجيل الغياب</h2>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>اسم الطالب / الرقم</label>
+        <input type="text" id="absStudent" placeholder="اسم الطالب أو رقمه" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>الفصل الدراسي</label>
+        <select id="absClass">
+          <option value="">-- اختر الفصل --</option>
+          <optgroup label="الصف الأول الثانوي">
+            <option>1/1</option><option>1/2</option><option>1/3</option><option>1/4</option><option>1/5</option><option>1/6</option>
+          </optgroup>
+          <optgroup label="الصف الثاني الثانوي">
+            <option>2/1</option><option>2/2</option><option>2/3</option><option>2/4</option><option>2/5</option><option>2/6</option>
+          </optgroup>
+          <optgroup label="الصف الثالث الثانوي">
+            <option>3/1</option><option>3/2</option><option>3/3</option><option>3/4</option><option>3/5</option><option>3/6</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>نوع الغياب</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <button class="reason-btn" id="abt-unexcused" onclick="selectAbsType('غياب بدون عذر')">❌ بدون عذر</button>
+          <button class="reason-btn" id="abt-excused" onclick="selectAbsType('غياب بعذر')">📋 بعذر</button>
+          <button class="reason-btn" id="abt-late" onclick="selectAbsType('تأخر')">🕐 تأخر</button>
+          <button class="reason-btn" id="abt-early" onclick="selectAbsType('خروج مبكر')">🚶 خروج مبكر</button>
+        </div>
+        <input type="hidden" id="absType" value="">
+      </div>
+      <div class="form-group">
+        <label>الحصة / المادة</label>
+        <select id="absPeriod">
+          <option value="الحصة الأولى">الحصة الأولى</option>
+          <option value="الحصة الثانية">الحصة الثانية</option>
+          <option value="الحصة الثالثة">الحصة الثالثة</option>
+          <option value="الحصة الرابعة">الحصة الرابعة</option>
+          <option value="الحصة الخامسة">الحصة الخامسة</option>
+          <option value="الحصة السادسة">الحصة السادسة</option>
+          <option value="اليوم كاملاً">اليوم كاملاً</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ملاحظات</label>
+        <input type="text" id="absNote" placeholder="ملاحظات إضافية (اختياري)">
+      </div>
+      <button class="abs-add-btn" style="width:100%;padding:14px;font-size:16px;border-radius:12px;" onclick="submitAbsence()">
+        📅 تسجيل الغياب
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+
+  <div>
+    <div class="absence-summary">
+      <div class="abs-card c1"><div class="num" id="absTotal">0</div><div class="lbl">إجمالي الغياب اليوم</div></div>
+      <div class="abs-card c2"><div class="num" id="absUnexcused">0</div><div class="lbl">غياب بدون عذر</div></div>
+      <div class="abs-card c3"><div class="num" id="absLate">0</div><div class="lbl">حالات التأخر</div></div>
+      <div class="abs-card c4"><div class="num" id="absExcused">0</div><div class="lbl">غياب بعذر</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header abs-header">
+        <span class="icon">📋</span>
+        <h2>سجل الغياب</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>الطالب</th><th>الفصل</th><th>نوع الغياب</th><th>الحصة</th><th>الوقت</th><th>ملاحظات</th><th>حذف</th>
+            </tr>
+          </thead>
+          <tbody id="absBody"></tbody>
+        </table>
+        <div class="empty-state" id="absEmpty">
+          <div class="icon">📅</div>
+          <p>لا توجد سجلات غياب اليوم</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- end page-absence -->
+
+<!-- =================== PAGE: VIOLATIONS =================== -->
+
+<div id="page-violations" class="page">
+<div class="main-container" style="grid-template-columns:340px 1fr;">
+
+  <!-- Form -->
+
+  <div class="panel">
+    <div class="panel-header vio-header">
+      <span class="icon">⚠️</span>
+      <h2>تسجيل مخالفة سلوكية</h2>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>اسم الطالب / الرقم</label>
+        <input type="text" id="vioStudent" placeholder="اسم الطالب أو رقمه" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>الفصل الدراسي</label>
+        <select id="vioClass">
+          <option value="">-- اختر الفصل --</option>
+          <optgroup label="الصف الأول الثانوي">
+            <option>1/1</option><option>1/2</option><option>1/3</option><option>1/4</option><option>1/5</option><option>1/6</option>
+          </optgroup>
+          <optgroup label="الصف الثاني الثانوي">
+            <option>2/1</option><option>2/2</option><option>2/3</option><option>2/4</option><option>2/5</option><option>2/6</option>
+          </optgroup>
+          <optgroup label="الصف الثالث الثانوي">
+            <option>3/1</option><option>3/2</option><option>3/3</option><option>3/4</option><option>3/5</option><option>3/6</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>نوع المخالفة</label>
+        <div class="vio-type-grid">
+          <button class="vio-type-btn" onclick="selectVioType(this,'التشويش على الحصة')">📢 تشويش</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'استخدام الجوال')">📱 جوال</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'عدم الانتظام')">🚫 عدم انتظام</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'الغش')">📝 غش</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'التنمر')">👊 تنمر</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'عدم احترام المعلم')">🙅 عدم احترام</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'التخريب')">🔨 تخريب</button>
+          <button class="vio-type-btn" onclick="selectVioType(this,'أخرى')">📋 أخرى</button>
+        </div>
+        <input type="hidden" id="vioType" value="">
+      </div>
+      <div class="form-group">
+        <label>درجة الخطورة</label>
+        <div class="vio-severity">
+          <button class="sev-btn low" onclick="selectSeverity(this,'خفيفة')">🟡 خفيفة</button>
+          <button class="sev-btn mid" onclick="selectSeverity(this,'متوسطة')">🟠 متوسطة</button>
+          <button class="sev-btn high" onclick="selectSeverity(this,'شديدة')">🔴 شديدة</button>
+        </div>
+        <input type="hidden" id="vioSeverity" value="">
+      </div>
+      <div class="form-group">
+        <label>الإجراء المتخذ</label>
+        <select id="vioAction">
+          <option>توجيه شفهي</option>
+          <option>إنذار كتابي</option>
+          <option>إخطار ولي الأمر</option>
+          <option>إحالة للمرشد الطلابي</option>
+          <option>إحالة للإدارة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>وصف المخالفة</label>
+        <input type="text" id="vioDesc" placeholder="وصف مختصر للمخالفة">
+      </div>
+      <button class="vio-add-btn" onclick="submitViolation()">⚠️ تسجيل المخالفة</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+
+  <div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
+      <div class="abs-card" style="border-top:4px solid #c0392b;"><div class="num" style="color:#c0392b;" id="vioTotalCount">0</div><div class="lbl">إجمالي المخالفات</div></div>
+      <div class="abs-card" style="border-top:4px solid #e67e22;"><div class="num" style="color:#e67e22;" id="vioMidCount">0</div><div class="lbl">مخالفات متوسطة</div></div>
+      <div class="abs-card" style="border-top:4px solid #8e44ad;"><div class="num" style="color:#8e44ad;" id="vioHighCount">0</div><div class="lbl">مخالفات شديدة</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header vio-header">
+        <span class="icon">📋</span>
+        <h2>سجل المخالفات السلوكية</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>الطالب</th><th>الفصل</th><th>المخالفة</th><th>الخطورة</th><th>الإجراء</th><th>الوقت</th><th>حذف</th>
+            </tr>
+          </thead>
+          <tbody id="vioBody"></tbody>
+        </table>
+        <div class="empty-state" id="vioEmpty">
+          <div class="icon">✅</div>
+          <p>لا توجد مخالفات مسجّلة اليوم<br>نتمنى أن يستمر هذا الوضع!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- end page-violations -->
+
+<!-- =================== PAGE: PARTICIPATION =================== -->
+
+<div id="page-participation" class="page">
+<div class="main-container" style="grid-template-columns:340px 1fr;">
+
+  <!-- Form -->
+
+  <div class="panel">
+    <div class="panel-header par-header">
+      <span class="icon">⭐</span>
+      <h2>تسجيل مشاركة الطالب</h2>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>اسم الطالب / الرقم</label>
+        <input type="text" id="parStudent" placeholder="اسم الطالب أو رقمه" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>الفصل الدراسي</label>
+        <select id="parClass">
+          <option value="">-- اختر الفصل --</option>
+          <optgroup label="الصف الأول الثانوي">
+            <option>1/1</option><option>1/2</option><option>1/3</option><option>1/4</option><option>1/5</option><option>1/6</option>
+          </optgroup>
+          <optgroup label="الصف الثاني الثانوي">
+            <option>2/1</option><option>2/2</option><option>2/3</option><option>2/4</option><option>2/5</option><option>2/6</option>
+          </optgroup>
+          <optgroup label="الصف الثالث الثانوي">
+            <option>3/1</option><option>3/2</option><option>3/3</option><option>3/4</option><option>3/5</option><option>3/6</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>نوع المشاركة</label>
+        <div class="par-type-grid">
+          <button class="par-type-btn" onclick="selectParType(this,'إجابة صحيحة')">✅ إجابة صحيحة</button>
+          <button class="par-type-btn" onclick="selectParType(this,'مبادرة')">💡 مبادرة</button>
+          <button class="par-type-btn" onclick="selectParType(this,'حل مسألة')">🧮 حل مسألة</button>
+          <button class="par-type-btn" onclick="selectParType(this,'قراءة')">📖 قراءة</button>
+          <button class="par-type-btn" onclick="selectParType(this,'عرض تقديمي')">🎤 عرض</button>
+          <button class="par-type-btn" onclick="selectParType(this,'مساعدة زميل')">🤝 مساعدة</button>
+        </div>
+        <input type="hidden" id="parType" value="">
+      </div>
+      <div class="form-group">
+        <label>التقييم (نجوم)</label>
+        <div class="par-stars" id="parStarsRow">
+          <span class="par-star" onclick="setStars(1)">★</span>
+          <span class="par-star" onclick="setStars(2)">★</span>
+          <span class="par-star" onclick="setStars(3)">★</span>
+          <span class="par-star" onclick="setStars(4)">★</span>
+          <span class="par-star" onclick="setStars(5)">★</span>
+        </div>
+        <input type="hidden" id="parStars" value="0">
+      </div>
+      <div class="form-group">
+        <label>المادة</label>
+        <input type="text" id="parSubject" placeholder="اسم المادة">
+      </div>
+      <div class="form-group">
+        <label>ملاحظة</label>
+        <input type="text" id="parNote" placeholder="وصف المشاركة (اختياري)">
+      </div>
+      <button class="par-add-btn" onclick="submitParticipation()">⭐ تسجيل المشاركة</button>
+    </div>
+  </div>
+
+  <!-- Right: leaderboard + table -->
+
+  <div style="display:flex;flex-direction:column;gap:20px;">
+
+```
+<!-- Leaderboard -->
+<div class="panel">
+  <div class="panel-header par-header">
+    <span class="icon">🏆</span>
+    <h2>قائمة المتميزين</h2>
+  </div>
+  <div class="panel-body">
+    <div class="leaderboard" id="leaderboard">
+      <div class="empty-state" style="padding:24px;">
+        <div class="icon">🌟</div>
+        <p>سيظهر هنا أكثر الطلاب مشاركةً</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="panel">
+  <div class="panel-header par-header">
+    <span class="icon">📋</span>
+    <h2>سجل المشاركات</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>الطالب</th><th>الفصل</th><th>نوع المشاركة</th><th>المادة</th><th>التقييم</th><th>الوقت</th><th>حذف</th>
+        </tr>
+      </thead>
+      <tbody id="parBody"></tbody>
+    </table>
+    <div class="empty-state" id="parEmpty">
+      <div class="icon">⭐</div>
+      <p>لا توجد مشاركات مسجّلة بعد</p>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+</div>
+</div><!-- end page-participation -->
+
+<!-- Modal -->
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon">✅</div>
+    <h3 id="modalTitle">تأكيد العودة</h3>
+    <p id="modalMsg">هل تريد تسجيل عودة الطالب إلى الفصل؟</p>
+    <div class="modal-actions">
+      <button class="modal-btn primary" onclick="confirmReturn()">نعم، سجّل العودة</button>
+      <button class="modal-btn secondary" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+
+<div class="toast" id="toast">✅ تم بنجاح</div>
+
+<script>
+  // === Data ===
+  let records = [];
+  let currentFilter = 'all';
+  let returnTarget = null;
+
+  // === Clock ===
+  function updateClock() {
+    const now = new Date();
+    const days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+    const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    document.getElementById('clockTime').textContent =
+      now.toLocaleTimeString('ar-SA', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    document.getElementById('clockDate').textContent =
+      `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    renderTable();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // === Reason selection ===
+  function selectReason(btn, val) {
+    document.querySelectorAll('.reason-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('reason').value = val;
+  }
+
+  // === Submit ===
+  function submitRequest() {
+    const student = document.getElementById('studentId').value.trim();
+    const cls = document.getElementById('classRoom').value;
+    const subject = document.getElementById('subject').value.trim();
+    const reason = document.getElementById('reason').value;
+    const duration = parseInt(document.getElementById('duration').value);
+
+    if (!student) { showToast('⚠️ الرجاء إدخال اسم أو رقم الطالب', 'warning'); return; }
+    if (!cls) { showToast('⚠️ الرجاء اختيار الفصل الدراسي', 'warning'); return; }
+    if (!reason) { showToast('⚠️ الرجاء اختيار سبب الاستئذان', 'warning'); return; }
+
+    const now = new Date();
+    const record = {
+      id: Date.now(),
+      student, cls, subject, reason, duration,
+      exitTime: now,
+      returnTime: null,
+      status: 'out'
+    };
+
+    records.unshift(record);
+    renderTable();
+    updateSummary();
+
+    // Show pass preview
+    const preview = document.getElementById('passPreview');
+    preview.classList.add('show');
+    document.getElementById('passStudent').textContent = student + ' - ' + cls;
+    document.getElementById('passReason').textContent = reason;
+    document.getElementById('passTime').textContent = formatTime(now);
+
+    showToast('✅ تم إصدار تصريح الخروج للطالب ' + student, 'success');
+
+    // Reset form
+    document.getElementById('studentId').value = '';
+    document.getElementById('classRoom').value = '';
+    document.getElementById('subject').value = '';
+    document.getElementById('reason').value = '';
+    document.querySelectorAll('.reason-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('duration').value = '10';
+  }
+
+  // === Render ===
+  function renderTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = records.filter(r => {
+      const matchSearch = r.student.toLowerCase().includes(search) || r.cls.toLowerCase().includes(search);
+      if (!matchSearch) return false;
+      if (currentFilter === 'all') return true;
+      if (currentFilter === 'out') return r.status === 'out' && !isLate(r);
+      if (currentFilter === 'in') return r.status === 'in';
+      if (currentFilter === 'late') return isLate(r);
+      return true;
+    });
+
+    const tbody = document.getElementById('trackingBody');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+    tbody.innerHTML = filtered.map((r, i) => {
+      const elapsed = getElapsed(r.exitTime, r.returnTime);
+      const late = isLate(r);
+      let statusHtml = '';
+      let statusClass = '';
+
+      if (r.status === 'in') {
+        statusHtml = '<span class="status-badge status-in">✅ عاد للفصل</span>';
+        statusClass = '';
+      } else if (late) {
+        statusHtml = '<span class="status-badge status-late">⚠️ تأخر</span>';
+      } else {
+        statusHtml = '<span class="status-badge status-out">🔴 خارج</span>';
+      }
+
+      const timerClass = r.status === 'in' ? 'ok' : (late ? 'danger' : 'warn');
+      const timerText = r.status === 'in'
+        ? `<span class="timer ok">${elapsed}</span>`
+        : `<span class="timer ${timerClass}">${elapsed}</span>`;
+
+      const actionHtml = r.status === 'out'
+        ? `<button class="return-btn" onclick="openReturnModal(${r.id})">🏠 عاد للفصل</button>`
+        : `<span class="no-btn">—</span>`;
+
+      return `<tr>
+        <td style="color:var(--text-muted);font-weight:700">${i+1}</td>
+        <td style="font-weight:700">${r.student}</td>
+        <td style="font-weight:600;color:var(--primary)">${r.cls}</td>
+        <td>${r.reason}${r.subject ? ' <span style="color:var(--text-muted);font-size:12px">(' + r.subject + ')</span>' : ''}</td>
+        <td style="font-family:'Cairo',monospace">${formatTime(r.exitTime)}</td>
+        <td style="font-family:'Cairo',monospace">${r.returnTime ? formatTime(r.returnTime) : '—'}</td>
+        <td>${timerText}</td>
+        <td>${statusHtml}</td>
+        <td>${actionHtml}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function isLate(r) {
+    if (r.status === 'in') return false;
+    const elapsed = (new Date() - r.exitTime) / 1000 / 60;
+    return elapsed > r.duration;
+  }
+
+  function getElapsed(exit, ret) {
+    const end = ret || new Date();
+    const diff = Math.floor((end - exit) / 1000);
+    const m = Math.floor(diff / 60);
+    const s = diff % 60;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function formatTime(d) {
+    return d.toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function updateSummary() {
+    const out = records.filter(r => r.status === 'out' && !isLate(r)).length;
+    const ins = records.filter(r => r.status === 'in').length;
+    const late = records.filter(r => r.status === 'out' && isLate(r)).length;
+    document.getElementById('sumOut').textContent = out;
+    document.getElementById('sumIn').textContent = ins;
+    document.getElementById('sumLate').textContent = late;
+    document.getElementById('hdrOut').textContent = out + late;
+    document.getElementById('hdrTotal').textContent = records.length;
+  }
+
+  // === Filter ===
+  function setFilter(f) {
+    currentFilter = f;
+    ['all','out','in','late'].forEach(k => {
+      document.getElementById('f-'+k).classList.toggle('active', k === f);
+    });
+    renderTable();
+  }
+
+  // === Return Modal ===
+  function openReturnModal(id) {
+    returnTarget = id;
+    const r = records.find(x => x.id === id);
+    document.getElementById('modalTitle').textContent = 'تأكيد عودة الطالب';
+    document.getElementById('modalMsg').textContent =
+      `هل تأكد عودة الطالب ${r.student} من (${r.reason}) إلى الفصل ${r.cls}؟`;
+    document.getElementById('modalIcon').textContent = '🏠';
+    document.getElementById('modalOverlay').classList.add('show');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+    returnTarget = null;
+  }
+
+  function confirmReturn() {
+    if (!returnTarget) return;
+    const r = records.find(x => x.id === returnTarget);
+    if (r) {
+      r.status = 'in';
+      r.returnTime = new Date();
+    }
+    closeModal();
+    renderTable();
+    updateSummary();
+    showToast('🏠 تم تسجيل عودة الطالب ' + (r ? r.student : '') + ' بنجاح', 'success');
+  }
+
+  // === Toast ===
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => t.className = 'toast', 3500);
+  }
+
+  // === Demo data ===
+  function addDemo() {
+    const demo = [
+      { student: 'أحمد محمد العمري', cls: '3/2', subject: 'الرياضيات', reason: 'دورة مياه', duration: 5, mins: -8 },
+      { student: 'فيصل خالد الزهراني', cls: '2/4', subject: 'الفيزياء', reason: 'العيادة الصحية', duration: 20, mins: -5 },
+      { student: 'سلطان عبد الله الغامدي', cls: '1/1', subject: 'اللغة العربية', reason: 'إدارة المدرسة', duration: 10, mins: -15 },
+      { student: 'علي حسن القحطاني', cls: '3/5', subject: 'الكيمياء', reason: 'مستشار الطلاب', duration: 15, mins: -4 },
+    ];
+    demo.forEach((d, i) => {
+      const exit = new Date();
+      exit.setMinutes(exit.getMinutes() - d.mins);
+      const record = {
+        id: Date.now() + i,
+        student: d.student, cls: d.cls, subject: d.subject,
+        reason: d.reason, duration: d.duration,
+        exitTime: exit, returnTime: null, status: 'out'
+      };
+      if (i === 2) {
+        record.status = 'in';
+        const ret = new Date(exit);
+        ret.setMinutes(ret.getMinutes() + 7);
+        record.returnTime = ret;
+      }
+      records.push(record);
+    });
+    renderTable();
+    updateSummary();
+  }
+
+  addDemo();
+
+  // ===== PAGE NAVIGATION =====
+  function showPage(p) {
+    document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('page-' + p).classList.add('active');
+    const tabs = { exit: 0, absence: 1, violations: 2, participation: 3 };
+    document.querySelectorAll('.nav-tab')[tabs[p]].classList.add('active');
+  }
+
+  // ===== ABSENCE =====
+  let absRecords = [];
+
+  function selectAbsType(val) {
+    document.querySelectorAll('#page-absence .reason-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('absType').value = val;
+  }
+
+  function submitAbsence() {
+    const student = document.getElementById('absStudent').value.trim();
+    const cls = document.getElementById('absClass').value;
+    const type = document.getElementById('absType').value;
+    const period = document.getElementById('absPeriod').value;
+    const note = document.getElementById('absNote').value.trim();
+    if (!student) { showToast('⚠️ أدخل اسم الطالب', 'warning'); return; }
+    if (!cls) { showToast('⚠️ اختر الفصل', 'warning'); return; }
+    if (!type) { showToast('⚠️ اختر نوع الغياب', 'warning'); return; }
+    absRecords.unshift({ id: Date.now(), student, cls, type, period, note, time: new Date() });
+    renderAbsence();
+    document.getElementById('absStudent').value = '';
+    document.getElementById('absNote').value = '';
+    document.getElementById('absType').value = '';
+    document.querySelectorAll('#page-absence .reason-btn').forEach(b => b.classList.remove('active'));
+    showToast('📅 تم تسجيل الغياب للطالب ' + student, 'success');
+  }
+
+  function renderAbsence() {
+    const tbody = document.getElementById('absBody');
+    const empty = document.getElementById('absEmpty');
+    if (!absRecords.length) { tbody.innerHTML = ''; empty.style.display = 'block'; } 
+    else {
+      empty.style.display = 'none';
+      tbody.innerHTML = absRecords.map((r, i) => {
+        const typeColors = {
+          'غياب بدون عذر': 'status-late',
+          'غياب بعذر': 'status-out',
+          'تأخر': 'status-out',
+          'خروج مبكر': 'status-out'
+        };
+        return `<tr>
+          <td style="color:var(--text-muted);font-weight:700">${i+1}</td>
+          <td style="font-weight:700">${r.student}</td>
+          <td style="color:var(--primary);font-weight:600">${r.cls}</td>
+          <td><span class="status-badge ${typeColors[r.type]||'status-out'}">${r.type}</span></td>
+          <td>${r.period}</td>
+          <td style="font-family:'Cairo',monospace">${formatTime(r.time)}</td>
+          <td style="color:var(--text-muted)">${r.note||'—'}</td>
+          <td><button onclick="deleteAbs(${r.id})" style="background:#fdf0ee;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;color:#c0392b;font-weight:700;">✕</button></td>
+        </tr>`;
+      }).join('');
+    }
+    document.getElementById('absTotal').textContent = absRecords.length;
+    document.getElementById('absUnexcused').textContent = absRecords.filter(r=>r.type==='غياب بدون عذر').length;
+    document.getElementById('absLate').textContent = absRecords.filter(r=>r.type==='تأخر').length;
+    document.getElementById('absExcused').textContent = absRecords.filter(r=>r.type==='غياب بعذر').length;
+    document.getElementById('absBadge').textContent = absRecords.length;
+  }
+
+  function deleteAbs(id) {
+    absRecords = absRecords.filter(r => r.id !== id);
+    renderAbsence();
+  }
+
+  // ===== VIOLATIONS =====
+  let vioRecords = [];
+
+  function selectVioType(btn, val) {
+    document.querySelectorAll('.vio-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('vioType').value = val;
+  }
+
+  function selectSeverity(btn, val) {
+    document.querySelectorAll('.sev-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('vioSeverity').value = val;
+  }
+
+  function submitViolation() {
+    const student = document.getElementById('vioStudent').value.trim();
+    const cls = document.getElementById('vioClass').value;
+    const type = document.getElementById('vioType').value;
+    const severity = document.getElementById('vioSeverity').value;
+    const action = document.getElementById('vioAction').value;
+    const desc = document.getElementById('vioDesc').value.trim();
+    if (!student) { showToast('⚠️ أدخل اسم الطالب', 'warning'); return; }
+    if (!cls) { showToast('⚠️ اختر الفصل', 'warning'); return; }
+    if (!type) { showToast('⚠️ اختر نوع المخالفة', 'warning'); return; }
+    if (!severity) { showToast('⚠️ حدد درجة الخطورة', 'warning'); return; }
+    vioRecords.unshift({ id: Date.now(), student, cls, type, severity, action, desc, time: new Date() });
+    renderViolations();
+    document.getElementById('vioStudent').value = '';
+    document.getElementById('vioDesc').value = '';
+    document.getElementById('vioType').value = '';
+    document.getElementById('vioSeverity').value = '';
+    document.querySelectorAll('.vio-type-btn,.sev-btn').forEach(b => b.classList.remove('active'));
+    showToast('⚠️ تم تسجيل المخالفة للطالب ' + student, 'warning');
+  }
+
+  function renderViolations() {
+    const tbody = document.getElementById('vioBody');
+    const empty = document.getElementById('vioEmpty');
+    if (!vioRecords.length) { tbody.innerHTML = ''; empty.style.display = 'block'; }
+    else {
+      empty.style.display = 'none';
+      const sevMap = { 'خفيفة': 'low', 'متوسطة': 'mid', 'شديدة': 'high' };
+      const sevLabel = { 'خفيفة': '🟡 خفيفة', 'متوسطة': '🟠 متوسطة', 'شديدة': '🔴 شديدة' };
+      tbody.innerHTML = vioRecords.map((r, i) => `<tr>
+        <td style="color:var(--text-muted);font-weight:700">${i+1}</td>
+        <td style="font-weight:700">${r.student}</td>
+        <td style="color:#8e44ad;font-weight:600">${r.cls}</td>
+        <td>${r.type}${r.desc ? ' <span style="color:var(--text-muted);font-size:12px">('+r.desc+')</span>' : ''}</td>
+        <td><span class="vio-badge ${sevMap[r.severity]||'low'}">${sevLabel[r.severity]||r.severity}</span></td>
+        <td style="font-size:13px">${r.action}</td>
+        <td style="font-family:'Cairo',monospace">${formatTime(r.time)}</td>
+        <td><button onclick="deleteVio(${r.id})" style="background:#fdf0ee;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;color:#c0392b;font-weight:700;">✕</button></td>
+      </tr>`).join('');
+    }
+    document.getElementById('vioTotalCount').textContent = vioRecords.length;
+    document.getElementById('vioMidCount').textContent = vioRecords.filter(r=>r.severity==='متوسطة').length;
+    document.getElementById('vioHighCount').textContent = vioRecords.filter(r=>r.severity==='شديدة').length;
+    document.getElementById('vioBadge').textContent = vioRecords.length;
+  }
+
+  function deleteVio(id) {
+    vioRecords = vioRecords.filter(r => r.id !== id);
+    renderViolations();
+  }
+
+  // ===== PARTICIPATION =====
+  let parRecords = [];
+  let currentStars = 0;
+
+  function setStars(n) {
+    currentStars = n;
+    document.getElementById('parStars').value = n;
+    document.querySelectorAll('.par-star').forEach((s, i) => {
+      s.classList.toggle('lit', i < n);
+    });
+  }
+
+  function selectParType(btn, val) {
+    document.querySelectorAll('.par-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('parType').value = val;
+  }
+
+  function submitParticipation() {
+    const student = document.getElementById('parStudent').value.trim();
+    const cls = document.getElementById('parClass').value;
+    const type = document.getElementById('parType').value;
+    const stars = parseInt(document.getElementById('parStars').value) || 0;
+    const subject = document.getElementById('parSubject').value.trim();
+    const note = document.getElementById('parNote').value.trim();
+    if (!student) { showToast('⚠️ أدخل اسم الطالب', 'warning'); return; }
+    if (!cls) { showToast('⚠️ اختر الفصل', 'warning'); return; }
+    if (!type) { showToast('⚠️ اختر نوع المشاركة', 'warning'); return; }
+    if (!stars) { showToast('⚠️ حدد تقييم النجوم', 'warning'); return; }
+    parRecords.unshift({ id: Date.now(), student, cls, type, stars, subject, note, time: new Date() });
+    renderParticipation();
+    document.getElementById('parStudent').value = '';
+    document.getElementById('parSubject').value = '';
+    document.getElementById('parNote').value = '';
+    document.getElementById('parType').value = '';
+    document.getElementById('parStars').value = '0';
+    document.querySelectorAll('.par-type-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.par-star').forEach(s => s.classList.remove('lit'));
+    currentStars = 0;
+    showToast('⭐ تم تسجيل مشاركة الطالب ' + student, 'success');
+  }
+
+  function renderParticipation() {
+    const tbody = document.getElementById('parBody');
+    const empty = document.getElementById('parEmpty');
+    if (!parRecords.length) { tbody.innerHTML = ''; empty.style.display = 'block'; }
+    else {
+      empty.style.display = 'none';
+      tbody.innerHTML = parRecords.map((r, i) => `<tr>
+        <td style="color:var(--text-muted);font-weight:700">${i+1}</td>
+        <td style="font-weight:700">${r.student}</td>
+        <td style="color:#1e8c5f;font-weight:600">${r.cls}</td>
+        <td>${r.type}</td>
+        <td>${r.subject||'—'}</td>
+        <td class="stars-display">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</td>
+        <td style="font-family:'Cairo',monospace">${formatTime(r.time)}</td>
+        <td><button onclick="deletePar(${r.id})" style="background:#fdf0ee;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;color:#c0392b;font-weight:700;">✕</button></td>
+      </tr>`).join('');
+    }
+    renderLeaderboard();
+  }
+
+  function renderLeaderboard() {
+    const lb = document.getElementById('leaderboard');
+    if (!parRecords.length) {
+      lb.innerHTML = '<div class="empty-state" style="padding:24px;"><div class="icon">🌟</div><p>سيظهر هنا أكثر الطلاب مشاركةً</p></div>';
+      return;
+    }
+    const scores = {};
+    parRecords.forEach(r => {
+      const key = r.student + '|' + r.cls;
+      scores[key] = (scores[key] || { student: r.student, cls: r.cls, total: 0, count: 0 });
+      scores[key].total += r.stars;
+      scores[key].count++;
+    });
+    const sorted = Object.values(scores).sort((a, b) => b.total - a.total).slice(0, 5);
+    const medals = ['🥇', '🥈', '🥉'];
+    const rankClass = ['gold', 'silver', 'bronze'];
+    lb.innerHTML = sorted.map((s, i) => `
+      <div class="lb-row">
+        <div class="lb-rank ${rankClass[i]||''}">${medals[i] || (i+1)}</div>
+        <div class="lb-info">
+          <div class="lb-name">${s.student}</div>
+          <div class="lb-class">الفصل ${s.cls} • ${s.count} مشاركة</div>
+        </div>
+        <div class="lb-score">${s.total} ⭐</div>
+      </div>
+    `).join('');
+  }
+
+  function deletePar(id) {
+    parRecords = parRecords.filter(r => r.id !== id);
+    renderParticipation();
+  }
+</script>
+
+</body>
+</html>
